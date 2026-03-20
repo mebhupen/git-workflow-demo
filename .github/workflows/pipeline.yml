@@ -1,0 +1,40 @@
+name: Advanced CI pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+  jobs:
+
+    build:
+      runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Give permission
+      run: chmod +x script.sh test.sh
+    
+    - name: Run main script
+      run: ./script.sh
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+     steps:
+     - name: Checkout Code
+       uses: actions/checkout@v3
+
+     - name: Run Tests
+       run: ./test.sh
+
+  verify:
+     runs-on: ubuntu-latest
+     needs: test
+
+      steps:
+      - name: Final Verification
+        run: echo "Pipeline Completed Successfully"   
+
